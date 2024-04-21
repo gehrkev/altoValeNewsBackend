@@ -1,9 +1,19 @@
 package com.ajmv.altoValeNewsBackend.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Table(name = "usuario")
 @Entity(name = "usuario")
+//@Getter
+//@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of="userId")
+
 public class Usuario {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 //    @Column(name = "user_id")
