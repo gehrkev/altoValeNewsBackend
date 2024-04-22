@@ -10,11 +10,10 @@ import lombok.NoArgsConstructor;
 @Entity(name = "usuario")
 //@Getter
 //@Setter
-//@Inheritance(strategy=JOINED)
+@Inheritance(strategy=InheritanceType.JOINED)
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of="userId")
-
 public class Usuario {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 //    @Column(name = "user_id")
