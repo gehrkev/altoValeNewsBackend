@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @Entity(name = "usuario")
 //@Getter
 //@Setter
+//@Inheritance(strategy=JOINED)
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of="userId")

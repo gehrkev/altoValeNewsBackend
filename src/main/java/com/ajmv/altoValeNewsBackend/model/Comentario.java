@@ -5,9 +5,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.w3c.dom.Text;
 
-import java.awt.*;
 import java.sql.Date;
 
 @Table(name = "comentario")

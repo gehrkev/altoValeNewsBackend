@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ajmv.altoValeNewsBackend.model.Comentario;
 import com.ajmv.altoValeNewsBackend.model.Publicacao;
 import com.ajmv.altoValeNewsBackend.model.PublicacaoRepository;
 
