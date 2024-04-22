@@ -17,18 +17,18 @@ import lombok.NoArgsConstructor;
 public class Usuario {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 //    @Column(name = "user_id")
-    private Integer userId;
-    private String nome;
-    private String sobrenome;
-    private String email;
-    private String cpf;
-    private String endereco;
-    private String cidade;
-    private String estado;
-    private String cep;
-    private String senhahash;
+    protected Integer userId;
+    protected String nome;
+    protected String sobrenome;
+    protected String email;
+    protected String cpf;
+    protected String endereco;
+    protected String cidade;
+    protected String estado;
+    protected String cep;
+    protected String senhahash;
     @Enumerated(EnumType.ORDINAL)
-    private TipoUsuario tipo;
+    protected TipoUsuario tipo;
 
     public Integer getUserId() {
         return userId;
