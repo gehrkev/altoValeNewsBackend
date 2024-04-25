@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("usuario_vip") // localhost:8080/usuario_vip
+@RequestMapping("usuario/vip") // localhost:8080/usuario_vip
 public class UsuarioVIPController {
 
     @Autowired

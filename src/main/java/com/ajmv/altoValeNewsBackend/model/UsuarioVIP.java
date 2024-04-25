@@ -13,7 +13,6 @@ import java.sql.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of="userId")
-//@PrimaryKeyJoinColumn
 @PrimaryKeyJoinColumn(name = "vip_id", referencedColumnName = "userId")
 public class UsuarioVIP extends Usuario {
 
