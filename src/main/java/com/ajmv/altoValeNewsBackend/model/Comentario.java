@@ -16,7 +16,9 @@ public class Comentario {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer comentarioId;
     private Integer publicacaoId;
-    private Integer userId;
+    @ManyToOne
+    @JoinColumn(name = "userId") // Nome da coluna que representa a chave estrangeira na tabela de Comentario
+    private Usuario usuario;
     private Date data;
     private String texto;
     private Integer curtidas;
@@ -37,12 +39,12 @@ public class Comentario {
         this.publicacaoId = publicacaoId;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     public Date getData() {
