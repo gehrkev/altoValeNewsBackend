@@ -2,11 +2,9 @@ package com.ajmv.altoValeNewsBackend.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
-
 
 @Table(name = "usuario_vip")
 @Entity(name = "usuario_vip")
@@ -16,7 +14,6 @@ import java.sql.Date;
 @Inheritance(strategy= InheritanceType.JOINED)
 public class UsuarioVIP extends Usuario {
 
-    //Verificar a PK / PFK entre usuario e usuario_vip
     private boolean ativo;
     private Date dataRenovacao;
 

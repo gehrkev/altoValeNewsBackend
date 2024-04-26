@@ -50,4 +50,7 @@ public class PublicacaoController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 	}
+	//TODO @DeleteMapping
+	//TODO @PutMapping
+	//TODO @PatchMapping
 }

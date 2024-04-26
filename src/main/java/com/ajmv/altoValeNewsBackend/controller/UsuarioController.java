@@ -22,7 +22,6 @@ public class UsuarioController {
         List<Usuario> usuarioList = repository.findAll();
         return usuarioList;
     }
-    //
 
     @GetMapping("/{id}") // endpoint para obter um usuário pelo ID
     public ResponseEntity<Usuario> getById(@PathVariable Integer id) {
@@ -43,4 +42,7 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+    //TODO @DeleteMapping
+    //TODO @PutMapping
+    //TODO @PatchMapping
 }

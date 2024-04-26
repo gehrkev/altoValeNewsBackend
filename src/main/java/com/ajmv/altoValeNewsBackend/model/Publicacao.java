@@ -1,18 +1,14 @@
 package com.ajmv.altoValeNewsBackend.model;
 
 import java.sql.Date;
-import java.util.ArrayList;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-
 @Table(name = "publicacao")
 @Entity(name = "publicacao")
-//@Getter
-//@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of="publicacaoId")
@@ -102,6 +98,5 @@ public class Publicacao {
 	public void setCurtidas(Integer curtidas) {
 		this.curtidas = curtidas;
 	}
-	
 	
 }

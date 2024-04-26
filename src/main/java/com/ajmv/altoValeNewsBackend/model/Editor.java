@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 @Table(name = "editor")
 @Entity(name = "editor")
 @NoArgsConstructor
-//@AllArgsConstructor
 @PrimaryKeyJoinColumn(name = "editor_id", referencedColumnName = "vip_id")
 public class Editor extends UsuarioVIP{
 

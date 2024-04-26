@@ -3,13 +3,10 @@ package com.ajmv.altoValeNewsBackend.model;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Table(name = "usuario")
 @Entity(name = "usuario")
-//@Getter
-//@Setter
 @Inheritance(strategy=InheritanceType.JOINED)
 @NoArgsConstructor
 @AllArgsConstructor
@@ -118,5 +115,3 @@ public class Usuario {
         this.tipo = tipo;
     }
 }
-
-

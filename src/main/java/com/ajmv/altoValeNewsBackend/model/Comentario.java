@@ -1,6 +1,5 @@
 package com.ajmv.altoValeNewsBackend.model;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -10,8 +9,6 @@ import java.sql.Date;
 
 @Table(name = "comentario")
 @Entity(name = "comentario")
-//@Getter
-//@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of="comentarioId")
