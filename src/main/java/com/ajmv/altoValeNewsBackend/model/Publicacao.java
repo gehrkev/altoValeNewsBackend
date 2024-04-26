@@ -1,6 +1,8 @@
 package com.ajmv.altoValeNewsBackend.model;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -15,10 +17,9 @@ import lombok.NoArgsConstructor;
 public class Publicacao {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer publicacaoId;
-//	@ManyToOne
-//	@JoinColumn(name = "editor_id") // Nome da coluna que representa a chave estrangeira na tabela de Publicacao
-//	private Editor editor;
-	private Integer editorId;
+	@ManyToOne
+	@JoinColumn(name = "editor_id") // Nome da coluna que representa a chave estrangeira na tabela de Publicacao
+	private Editor editor;
 	private String titulo;
 	private Date data;
 	private String texto;
@@ -27,8 +28,9 @@ public class Publicacao {
 	private String categoria; 
 	private boolean visibilidadeVip;
 	private Integer curtidas;
-	
-	//TODO	// List<Comentario> comentarios
+	@OneToMany
+	@JoinColumn(name = "comentarioId")
+	private List<Comentario> comentarios;
 	public Integer getPublicacaoId() {
 		return publicacaoId;
 	}
@@ -36,20 +38,14 @@ public class Publicacao {
 		this.publicacaoId = publicacaoId;
 	}
 
-//	public Editor getEditor() {
-//		return editor;
-//	}
-//
-//	public void setEditor(Editor editor) {
-//		this.editor = editor;
-//	}
+	public Editor getEditor() {
+		return editor;
+	}
 
-		public Integer getEditorId() {
-		return editorId;
+	public void setEditor(Editor editor) {
+		this.editor = editor;
 	}
-	public void setEditorId(Integer editorId) {
-		this.editorId = editorId;
-	}
+
 	public String getTitulo() {
 		return titulo;
 	}
@@ -98,5 +94,12 @@ public class Publicacao {
 	public void setCurtidas(Integer curtidas) {
 		this.curtidas = curtidas;
 	}
-	
+
+	public List<Comentario> getComentarios() {
+		return comentarios;
+	}
+
+	public void setComentarios(List<Comentario> comentarios) {
+		this.comentarios = comentarios;
+	}
 }
