@@ -32,8 +32,7 @@ public class ComentarioController {
             return ResponseEntity.notFound().build();
     }
 
-    //TODO
-    //GetByPublicacao
+    //TODO    //GetByPublicacao
 
     @PostMapping //Post new comentario
     public ResponseEntity<Comentario> create(@RequestBody Comentario comentario) {

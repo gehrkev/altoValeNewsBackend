@@ -39,8 +39,7 @@ public class PublicacaoController {
 			return ResponseEntity.notFound().build();
 	}
 	
-	//TODO
-	//GetByEditor
+	//TODO	//GetByEditor
 
 	@PostMapping // Post new publicacao
 	public ResponseEntity<Publicacao> create(@RequestBody Publicacao publicacao) {
