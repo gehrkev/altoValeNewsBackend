@@ -12,8 +12,8 @@ import java.sql.Date;
 @Entity(name = "usuario_vip")
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(of="userId")
 @PrimaryKeyJoinColumn(name = "vip_id", referencedColumnName = "userId")
+@Inheritance(strategy= InheritanceType.JOINED)
 public class UsuarioVIP extends Usuario {
 
     //Verificar a PK / PFK entre usuario e usuario_vip

@@ -3,11 +3,7 @@ package com.ajmv.altoValeNewsBackend.model;
 import java.sql.Date;
 import java.util.ArrayList;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -23,6 +19,9 @@ import lombok.NoArgsConstructor;
 public class Publicacao {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer publicacaoId;
+//	@ManyToOne
+//	@JoinColumn(name = "editor_id") // Nome da coluna que representa a chave estrangeira na tabela de Publicacao
+//	private Editor editor;
 	private Integer editorId;
 	private String titulo;
 	private Date data;
@@ -33,15 +32,23 @@ public class Publicacao {
 	private boolean visibilidadeVip;
 	private Integer curtidas;
 	
-	//TODO
-	//List<Comentario> comentarios
+	//TODO	// List<Comentario> comentarios
 	public Integer getPublicacaoId() {
 		return publicacaoId;
 	}
 	public void setPublicacaoId(Integer publicacaoId) {
 		this.publicacaoId = publicacaoId;
 	}
-	public Integer getEditorId() {
+
+//	public Editor getEditor() {
+//		return editor;
+//	}
+//
+//	public void setEditor(Editor editor) {
+//		this.editor = editor;
+//	}
+
+		public Integer getEditorId() {
 		return editorId;
 	}
 	public void setEditorId(Integer editorId) {
