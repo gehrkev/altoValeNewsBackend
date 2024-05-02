@@ -42,7 +42,22 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-    //TODO @DeleteMapping
-    //TODO @PutMapping
-    //TODO @PatchMapping
+
+    @DeleteMapping("/{id}") // endpoint para excluir um usuário pelo ID
+    public ResponseEntity<?> deleteUsuario(@PathVariable Integer id) {
+        try {
+            Optional<Usuario> usuarioOptional = repository.findById(id);
+            if (usuarioOptional.isPresent()) {
+                repository.deleteById(id);
+                return ResponseEntity.noContent().build(); // Retorna 204 No Content
+            } else {
+                return ResponseEntity.notFound().build(); // Retorna 404 Not Found se o usuário não for encontrado
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Retorna 500 Internal Server Error em caso de exceção
+        }
+    }
+
+    //TODO @PutMapping completa
+    //TODO @PatchMapping parcial
 }
