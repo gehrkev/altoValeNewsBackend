@@ -58,6 +58,61 @@ public class UsuarioController {
         }
     }
 
-    //TODO @PutMapping completa
-    //TODO @PatchMapping parcial
+    @PutMapping("/{id}") // endpoint para atualizar um usuário pelo ID
+    public ResponseEntity<Usuario> updateUsuario(@PathVariable Integer id, @RequestBody Usuario usuarioAtualizado) {
+        try {
+            Optional<Usuario> usuarioOptional = repository.findById(id);
+            if (usuarioOptional.isPresent()) {
+                Usuario usuarioExistente = usuarioOptional.get();
+
+                usuarioExistente.setEndereco(usuarioAtualizado.getEndereco());
+                usuarioExistente.setCidade(usuarioAtualizado.getCidade());
+                usuarioExistente.setEstado(usuarioAtualizado.getEstado());
+                usuarioExistente.setCep(usuarioAtualizado.getCep());
+
+                Usuario usuarioAtualizadoBanco = repository.save(usuarioExistente);
+                return ResponseEntity.ok(usuarioAtualizadoBanco);
+            } else {
+                return ResponseEntity.notFound().build(); // Retorna 404 Not Found se o usuário não for encontrado
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Retorna 500 Internal Server Error em caso de exceção
+        }
+    }
+
+    @PatchMapping("/{id}") // endpoint para atualizar parcialmente um usuário pelo ID
+    public ResponseEntity<Usuario> partialUpdateUsuario(@PathVariable Integer id, @RequestBody Usuario usuarioAtualizado) {
+        try {
+            Optional<Usuario> usuarioOptional = repository.findById(id);
+            if (usuarioOptional.isPresent()) {
+                Usuario usuarioExistente = usuarioOptional.get();
+                if (usuarioAtualizado.getEndereco() != null) {
+                    usuarioExistente.setEndereco(usuarioAtualizado.getEndereco());
+                }
+                if (usuarioAtualizado.getCidade() != null) {
+                    usuarioExistente.setCidade(usuarioAtualizado.getCidade());
+                }
+                if (usuarioAtualizado.getEstado() != null) {
+                    usuarioExistente.setEstado(usuarioAtualizado.getEstado());
+                }
+                if (usuarioAtualizado.getCep() != null) {
+                    usuarioExistente.setCep(usuarioAtualizado.getCep());
+                }
+                if (usuarioAtualizado.getTipo() != null) {
+                    usuarioExistente.setTipo(usuarioAtualizado.getTipo());
+                }
+                if (usuarioAtualizado.getSenhahash() != null) {
+                    usuarioExistente.setSenhahash(usuarioAtualizado.getSenhahash());
+                }
+
+                Usuario usuarioAtualizadoSalvo = repository.save(usuarioExistente);
+                return ResponseEntity.ok(usuarioAtualizadoSalvo);
+            } else {
+                return ResponseEntity.notFound().build(); // Retorna 404 Not Found se o usuário não for encontrado
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Retorna 500 Internal Server Error em caso de exceção
+        }
+    }
+
 }
