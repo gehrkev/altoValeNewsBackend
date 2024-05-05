@@ -20,6 +20,8 @@ public class Comentario {
     @JoinColumn(name = "userId") // Nome da coluna que representa a chave estrangeira na tabela de Comentario
     private Usuario usuario;
     private Date data;
+    //TODO @incluirDataAtualizacao
+
     private String texto;
     private Integer curtidas;
 

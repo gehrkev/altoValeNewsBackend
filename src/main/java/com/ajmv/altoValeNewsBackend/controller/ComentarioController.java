@@ -2,6 +2,7 @@ package com.ajmv.altoValeNewsBackend.controller;
 
 import com.ajmv.altoValeNewsBackend.model.Comentario;
 import com.ajmv.altoValeNewsBackend.model.ComentarioRepository;
+import com.ajmv.altoValeNewsBackend.model.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,8 +33,6 @@ public class ComentarioController {
             return ResponseEntity.notFound().build();
     }
 
-    //TODO    //GetByPublicacao
-
     @PostMapping //Post new comentario
     public ResponseEntity<Comentario> create(@RequestBody Comentario comentario) {
         try {
@@ -44,7 +43,102 @@ public class ComentarioController {
         }
     }
 
-    //TODO @PutMapping
-    //TODO @PatchMapping
-    //TODO @DeleteMapping
+    @DeleteMapping("/{id}") // endpoint para excluir um comentario pelo ID
+    public ResponseEntity<?> deleteComentario(@PathVariable Integer id) {
+        try {
+            Optional<Comentario> comentarioOptional = comentarioRepository.findById(id);
+            if (comentarioOptional.isPresent()) {
+                comentarioRepository.deleteById(id);
+                return ResponseEntity.noContent().build(); // Retorna 204 No Content
+            } else {
+                return ResponseEntity.notFound().build(); // Retorna 404 Not Found se o comentário não for encontrado
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Retorna 500 Internal Server Error em caso de exceção
+        }
+    }
+
+    @PutMapping("/{id}") // endpoint para atualizar um comentário pelo ID
+    public ResponseEntity<Comentario> updateComentario(@PathVariable Integer id, @RequestBody Comentario comentarioAtualizado) {
+        try {
+            Optional<Comentario> comentarioOptional = comentarioRepository.findById(id);
+            if (comentarioOptional.isPresent()) {
+                Comentario comentarioExistente = comentarioOptional.get();
+
+                comentarioExistente.setTexto(comentarioAtualizado.getTexto());
+                comentarioExistente.setData(comentarioAtualizado.getData());
+
+                Comentario comentarioAtualizadoBanco = comentarioRepository.save(comentarioExistente);
+                return ResponseEntity.ok(comentarioAtualizadoBanco);
+            } else {
+                return ResponseEntity.notFound().build(); // Retorna 404 Not Found se o usuário não for encontrado
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Retorna 500 Internal Server Error em caso de exceção
+        }
+    }
+
+    @PatchMapping("/{id}") // endpoint para atualizar parcialmente um comentário pelo ID
+    public ResponseEntity<Comentario> partialUpdateComentario(@PathVariable Integer id, @RequestBody Comentario comentarioAtualizado) {
+        try {
+            Optional<Comentario> comentarioOptional = comentarioRepository.findById(id);
+            if (comentarioOptional.isPresent()) {
+                Comentario comentarioExistente = comentarioOptional.get();
+                if (comentarioAtualizado.getTexto() != null) {
+                    comentarioExistente.setTexto(comentarioAtualizado.getTexto());
+                }
+                if (comentarioAtualizado.getData() != null) {
+                    comentarioExistente.setData(comentarioAtualizado.getData());
+                }
+
+                Comentario comentarioAtualizadoSalvo = comentarioRepository.save(comentarioExistente);
+                return ResponseEntity.ok(comentarioAtualizadoSalvo);
+            } else {
+                return ResponseEntity.notFound().build(); // Retorna 404 Not Found se o usuário não for encontrado
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Retorna 500 Internal Server Error em caso de exceção
+        }
+    }
+
+    @PatchMapping("/{id}/like") // endpoint para atualizar as curtidas pelo ID
+    public ResponseEntity<Comentario> like(@PathVariable Integer id) {
+        try {
+            Optional<Comentario> comentarioOptional = comentarioRepository.findById(id);
+            if (comentarioOptional.isPresent()) {
+                Comentario comentarioExistente = comentarioOptional.get();
+                    int curtidasAtuais = comentarioExistente.getCurtidas();
+                    curtidasAtuais++;
+                    comentarioExistente.setCurtidas(curtidasAtuais);
+
+                Comentario comentarioAtualizadoSalvo = comentarioRepository.save(comentarioExistente);
+                return ResponseEntity.ok(comentarioAtualizadoSalvo);
+            } else {
+                return ResponseEntity.notFound().build(); // Retorna 404 Not Found se o usuário não for encontrado
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Retorna 500 Internal Server Error em caso de exceção
+        }
+    }
+
+    @PatchMapping("/{id}/dislike") // endpoint para atualizar as curtidas pelo ID
+    public ResponseEntity<Comentario> dislike(@PathVariable Integer id) {
+        try {
+            Optional<Comentario> comentarioOptional = comentarioRepository.findById(id);
+            if (comentarioOptional.isPresent()) {
+                Comentario comentarioExistente = comentarioOptional.get();
+                int curtidasAtuais = comentarioExistente.getCurtidas();
+                curtidasAtuais--;
+                comentarioExistente.setCurtidas(curtidasAtuais);
+
+                Comentario comentarioAtualizadoSalvo = comentarioRepository.save(comentarioExistente);
+                return ResponseEntity.ok(comentarioAtualizadoSalvo);
+            } else {
+                return ResponseEntity.notFound().build(); // Retorna 404 Not Found se o usuário não for encontrado
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Retorna 500 Internal Server Error em caso de exceção
+        }
+    }
+
 }

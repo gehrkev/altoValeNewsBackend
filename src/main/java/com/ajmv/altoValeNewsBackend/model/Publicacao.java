@@ -28,8 +28,7 @@ public class Publicacao {
 	private String categoria; 
 	private boolean visibilidadeVip;
 	private Integer curtidas;
-	@OneToMany
-	@JoinColumn(name = "comentarioId")
+	@OneToMany(mappedBy = "publicacaoId")
 	private List<Comentario> comentarios;
 	public Integer getPublicacaoId() {
 		return publicacaoId;
