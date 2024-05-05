@@ -3,15 +3,11 @@ package com.ajmv.altoValeNewsBackend.controller;
 import java.util.List;
 import java.util.Optional;
 
+import com.ajmv.altoValeNewsBackend.model.Comentario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.ajmv.altoValeNewsBackend.model.Publicacao;
 import com.ajmv.altoValeNewsBackend.model.PublicacaoRepository;
@@ -50,7 +46,63 @@ public class PublicacaoController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
 	}
-	//TODO @DeleteMapping
-	//TODO @PutMapping
+
+	@DeleteMapping("/{id}") // endpoint para excluir uma publicação pelo ID
+	public ResponseEntity<?> deletePublicacao(@PathVariable Integer id) {
+		try {
+			Optional<Publicacao> publicacaoOptional = publicacaoRepository.findById(id);
+			if (publicacaoOptional.isPresent()) {
+				publicacaoRepository.deleteById(id);
+				return ResponseEntity.noContent().build(); // Retorna 204 No Content
+			} else {
+				return ResponseEntity.notFound().build(); // Retorna 404 Not Found se o comentário não for encontrado
+			}
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Retorna 500 Internal Server Error em caso de exceção
+		}
+	}
+
+	@PutMapping("/{id}") // endpoint para atualizar uma publicação pelo ID
+	public ResponseEntity<Publicacao> updatePublicacao(@PathVariable Integer id, @RequestBody Publicacao publicacaoAtualizado) {
+		try {
+			Optional<Publicacao> publicacaoOptional = publicacaoRepository.findById(id);
+			if (publicacaoOptional.isPresent()) {
+				Publicacao publicacaoExistente = publicacaoOptional.get();
+
+				publicacaoExistente.setTexto(publicacaoAtualizado.getTexto());
+				publicacaoExistente.setData(publicacaoAtualizado.getData());
+
+				Publicacao publicacaoAtualizadoBanco = publicacaoRepository.save(publicacaoExistente);
+				return ResponseEntity.ok(publicacaoAtualizadoBanco);
+			} else {
+				return ResponseEntity.notFound().build(); // Retorna 404 Not Found se o usuário não for encontrado
+			}
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Retorna 500 Internal Server Error em caso de exceção
+		}
+	}
+	
 	//TODO @PatchMapping
+	@PatchMapping("/{id}") // endpoint para atualizar parcialmente uma publicação pelo ID
+	public ResponseEntity<Publicacao> partialUpdatePublicacao(@PathVariable Integer id, @RequestBody Publicacao publicacaoAtualizado) {
+		try {
+			Optional<Publicacao> publicacaoOptional = publicacaoRepository.findById(id);
+			if (publicacaoOptional.isPresent()) {
+				Publicacao publicacaoExistente = publicacaoOptional.get();
+				if (publicacaoAtualizado.getTexto() != null) {
+					publicacaoExistente.setTexto(publicacaoAtualizado.getTexto());
+				}
+				if (publicacaoAtualizado.getData() != null) {
+					publicacaoExistente.setData(publicacaoAtualizado.getData());
+				}
+
+				Publicacao publicacaoAtualizadoSalvo = publicacaoRepository.save(publicacaoExistente);
+				return ResponseEntity.ok(publicacaoAtualizadoSalvo);
+			} else {
+				return ResponseEntity.notFound().build(); // Retorna 404 Not Found se o usuário não for encontrado
+			}
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Retorna 500 Internal Server Error em caso de exceção
+		}
+	}
 }
