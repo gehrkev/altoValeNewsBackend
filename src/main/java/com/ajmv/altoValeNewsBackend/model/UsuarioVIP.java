@@ -14,6 +14,7 @@ import java.sql.Date;
 @Inheritance(strategy= InheritanceType.JOINED)
 public class UsuarioVIP extends Usuario {
 
+    //TODO remover o atributo "ativo" e atualizar a tabela usuario_vip no DB.
     private boolean ativo;
     private Date dataRenovacao;
 
