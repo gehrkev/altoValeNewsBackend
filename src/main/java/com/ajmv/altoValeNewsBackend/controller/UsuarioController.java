@@ -1,5 +1,6 @@
 package com.ajmv.altoValeNewsBackend.controller;
 
+import com.ajmv.altoValeNewsBackend.model.TipoUsuario;
 import com.ajmv.altoValeNewsBackend.model.Usuario;
 import com.ajmv.altoValeNewsBackend.model.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,7 @@ public class UsuarioController {
     @PostMapping // POST - criar um novo usuário
     public ResponseEntity<Usuario> createUsuario(@RequestBody Usuario novoUsuario) {
         try {
+            novoUsuario.setTipo(TipoUsuario.USUARIO); // Definir o tipo como tipo 0 - USUARIO
             Usuario usuarioCriado = repository.save(novoUsuario);
             return ResponseEntity.status(HttpStatus.CREATED).body(usuarioCriado);
         } catch (Exception e) {

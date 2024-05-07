@@ -2,6 +2,7 @@ package com.ajmv.altoValeNewsBackend.controller;
 
 import com.ajmv.altoValeNewsBackend.model.Editor;
 import com.ajmv.altoValeNewsBackend.model.EditorRepository;
+import com.ajmv.altoValeNewsBackend.model.TipoUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,9 +34,10 @@ public class EditorController {
         }
     }
 
-    @PostMapping // POST - criar um novo usuário
+    @PostMapping // POST - criar um novo editor
     public ResponseEntity<Editor> createEditor(@RequestBody Editor novoEditor) {
         try {
+            novoEditor.setTipo(TipoUsuario.EDITOR); // Definir o tipo como tipo 2 - EDITOR
             Editor editorCriado = repository.save(novoEditor);
             return ResponseEntity.status(HttpStatus.CREATED).body(editorCriado);
         } catch (Exception e) {

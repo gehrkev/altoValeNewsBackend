@@ -3,6 +3,7 @@ package com.ajmv.altoValeNewsBackend.controller;
 import com.ajmv.altoValeNewsBackend.model.Administrador;
 import com.ajmv.altoValeNewsBackend.model.AdministradorRepository;
 import com.ajmv.altoValeNewsBackend.model.Editor;
+import com.ajmv.altoValeNewsBackend.model.TipoUsuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +38,7 @@ public class AdministradorController {
     @PostMapping // POST - criar um novo usuário
     public ResponseEntity<Editor> createAdministrador(@RequestBody Administrador novoAdministrador) {
         try {
+            novoAdministrador.setTipo(TipoUsuario.ADMINISTRADOR); // Definir o tipo como tipo 3 - ADMINISTRADOR
             Editor administradorCriado = repository.save(novoAdministrador);
             return ResponseEntity.status(HttpStatus.CREATED).body(administradorCriado);
         } catch (Exception e) {
