@@ -71,6 +71,12 @@ public class PublicacaoController {
 
 				publicacaoExistente.setTexto(publicacaoAtualizado.getTexto());
 				publicacaoExistente.setData(publicacaoAtualizado.getData());
+				publicacaoExistente.setImagem(publicacaoAtualizado.getImagem());
+				publicacaoExistente.setVideo(publicacaoAtualizado.getVideo());
+				publicacaoExistente.setCategoria(publicacaoAtualizado.getCategoria());
+				publicacaoExistente.setVisibilidadeVip(publicacaoAtualizado.isVisibilidadeVip());
+				publicacaoExistente.setTitulo(publicacaoAtualizado.getTitulo());
+				
 
 				Publicacao publicacaoAtualizadoBanco = publicacaoRepository.save(publicacaoExistente);
 				return ResponseEntity.ok(publicacaoAtualizadoBanco);
@@ -94,6 +100,21 @@ public class PublicacaoController {
 				}
 				if (publicacaoAtualizado.getData() != null) {
 					publicacaoExistente.setData(publicacaoAtualizado.getData());
+				}
+				if (publicacaoAtualizado.getImagem() != null) {
+					publicacaoExistente.setImagem(publicacaoAtualizado.getImagem());
+				}
+				if (publicacaoAtualizado.getVideo() != null) {
+					publicacaoExistente.setVideo(publicacaoAtualizado.getVideo());
+				}
+				if (publicacaoAtualizado.getCategoria() != null) {
+					publicacaoExistente.setCategoria(publicacaoAtualizado.getCategoria());
+				}
+				if (publicacaoAtualizado.isVisibilidadeVip() != null) {
+					publicacaoExistente.setVisibilidadeVip(publicacaoAtualizado.isVisibilidadeVip());
+				}
+				if (publicacaoAtualizado.getTitulo() != null) {
+					publicacaoExistente.setTitulo(publicacaoAtualizado.getTitulo());
 				}
 
 				Publicacao publicacaoAtualizadoSalvo = publicacaoRepository.save(publicacaoExistente);

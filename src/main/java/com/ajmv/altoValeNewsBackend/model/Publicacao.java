@@ -26,7 +26,7 @@ public class Publicacao {
 	private byte[] imagem; 
 	private byte[] video; 
 	private String categoria; 
-	private boolean visibilidadeVip;
+	private Boolean visibilidadeVip;
 	private Integer curtidas;
 	@OneToMany(mappedBy = "publicacaoId")
 	private List<Comentario> comentarios;
@@ -81,10 +81,10 @@ public class Publicacao {
 	public void setCategoria(String categoria) {
 		this.categoria = categoria;
 	}
-	public boolean isVisibilidadeVip() {
+	public Boolean isVisibilidadeVip() {
 		return visibilidadeVip;
 	}
-	public void setVisibilidadeVip(boolean visibilidadeVip) {
+	public void setVisibilidadeVip(Boolean visibilidadeVip) {
 		this.visibilidadeVip = visibilidadeVip;
 	}
 	public Integer getCurtidas() {
