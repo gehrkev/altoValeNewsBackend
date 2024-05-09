@@ -45,7 +45,5 @@ public class AdministradorController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-//TODO    @DeleteMapping
-//TODO    @PutMapping // Atualização completa
-//TODO    @PatchMapping //Atualização parcial
+
 }

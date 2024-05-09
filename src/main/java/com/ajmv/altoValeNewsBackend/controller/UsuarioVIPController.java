@@ -2,6 +2,7 @@ package com.ajmv.altoValeNewsBackend.controller;
 
 
 import com.ajmv.altoValeNewsBackend.model.TipoUsuario;
+import com.ajmv.altoValeNewsBackend.model.Usuario;
 import com.ajmv.altoValeNewsBackend.model.UsuarioVIP;
 import com.ajmv.altoValeNewsBackend.model.UsuarioVIPRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,8 +46,49 @@ public class UsuarioVIPController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-    //TODO @DeleteMapping
-    //TODO @PutMapping
-    //TODO @PatchMapping
+
+    @PutMapping("/{id}") // endpoint para atualizar um usuário pelo ID
+    public ResponseEntity<UsuarioVIP> updateUsuarioVIP(@PathVariable Integer id, @RequestBody UsuarioVIP usuarioAtualizado) {
+        try {
+            Optional<UsuarioVIP> usuarioOptional = repository.findById(id);
+            if (usuarioOptional.isPresent()) {
+                UsuarioVIP usuarioExistente = usuarioOptional.get();
+
+                usuarioExistente.setAtivo(usuarioAtualizado.isAtivo());
+                usuarioExistente.setDataRenovacao(usuarioAtualizado.getDataRenovacao());
+
+                UsuarioVIP usuarioAtualizadoBanco = repository.save(usuarioExistente);
+                return ResponseEntity.ok(usuarioAtualizadoBanco);
+            } else {
+                return ResponseEntity.notFound().build(); // Retorna 404 Not Found se o usuário não for encontrado
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Retorna 500 Internal Server Error em caso de exceção
+        }
+    }
+
+    @PatchMapping("/{id}") // endpoint para atualizar parcialmente um usuário pelo ID
+    public ResponseEntity<UsuarioVIP> partialUpdateUsuarioVIP(@PathVariable Integer id, @RequestBody UsuarioVIP usuarioAtualizado) {
+        try {
+            Optional<UsuarioVIP> usuarioOptional = repository.findById(id);
+            if (usuarioOptional.isPresent()) {
+                UsuarioVIP usuarioExistente = usuarioOptional.get();
+                if (usuarioAtualizado.isAtivo() != null) {
+                    usuarioExistente.setAtivo(usuarioAtualizado.isAtivo());
+                }
+                if (usuarioAtualizado.getDataRenovacao() != null) {
+                    usuarioExistente.setDataRenovacao(usuarioAtualizado.getDataRenovacao());
+                }
+
+                UsuarioVIP usuarioAtualizadoSalvo = repository.save(usuarioExistente);
+                return ResponseEntity.ok(usuarioAtualizadoSalvo);
+            } else {
+                return ResponseEntity.notFound().build(); // Retorna 404 Not Found se o usuário não for encontrado
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Retorna 500 Internal Server Error em caso de exceção
+        }
+    }
+
 }
 

@@ -34,20 +34,21 @@ public class PublicacaoController {
 			return ResponseEntity.notFound().build();
 	}
 
-	@GetMapping("/editor/{editorId}") // endpoint para obter todas as publicações de um editor pelo ID do editor
-	public ResponseEntity<List<Publicacao>> getByEditor(@PathVariable Integer editorId) {
-		try {
-			List<Publicacao> publicacoesDoEditor = publicacaoRepository.findByEditorId(editorId);
-
-			if (!publicacoesDoEditor.isEmpty()) {
-				return ResponseEntity.ok(publicacoesDoEditor);
-			} else {
-				return ResponseEntity.notFound().build(); // Retorna 404 Not Found se nenhuma publicação for encontrada para o editor
-			}
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Retorna 500 Internal Server Error em caso de exceção
-		}
-	}
+	//TODO Avaliar a necessidade do endpoint - o Spring se confunde na hora de encontrar a chave devido à herança e chaves com nomes diferentes para subclasses
+//	@GetMapping("/editor/{editorId}") // endpoint para obter todas as publicações de um editor pelo ID do editor
+//	public ResponseEntity<List<Publicacao>> getByEditor(@PathVariable Integer editorId) {
+//		try {
+//			List<Publicacao> publicacoesDoEditor = publicacaoRepository.findByEditorEditorId(editorId);
+//
+//			if (!publicacoesDoEditor.isEmpty()) {
+//				return ResponseEntity.ok(publicacoesDoEditor);
+//			} else {
+//				return ResponseEntity.notFound().build(); // Retorna 404 Not Found se nenhuma publicação for encontrada para o editor
+//			}
+//		} catch (Exception e) {
+//			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Retorna 500 Internal Server Error em caso de exceção
+//		}
+//	}
 
 	@PostMapping // Post new publicacao
 	public ResponseEntity<Publicacao> create(@RequestBody Publicacao publicacao) {
@@ -131,6 +132,46 @@ public class PublicacaoController {
 				return ResponseEntity.ok(publicacaoAtualizadoSalvo);
 			} else {
 				return ResponseEntity.notFound().build(); // Retorna 404 Not Found se o usuário não for encontrado
+			}
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Retorna 500 Internal Server Error em caso de exceção
+		}
+	}
+
+	@PatchMapping("/{id}/like") // endpoint para atualizar as curtidas pelo ID
+	public ResponseEntity<Publicacao> like(@PathVariable Integer id) {
+		try {
+			Optional<Publicacao> publicacaoOptional = publicacaoRepository.findById(id);
+			if (publicacaoOptional.isPresent()) {
+				Publicacao publicacaoExistente = publicacaoOptional.get();
+				int curtidasAtuais = publicacaoExistente.getCurtidas();
+				curtidasAtuais++;
+				publicacaoExistente.setCurtidas(curtidasAtuais);
+
+				Publicacao publicacaoAtualizadaSalva = publicacaoRepository.save(publicacaoExistente);
+				return ResponseEntity.ok(publicacaoAtualizadaSalva);
+			} else {
+				return ResponseEntity.notFound().build(); // Retorna 404 Not Found se a publicacao não for encontrada
+			}
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Retorna 500 Internal Server Error em caso de exceção
+		}
+	}
+
+	@PatchMapping("/{id}/dislike") // endpoint para atualizar as curtidas pelo ID
+	public ResponseEntity<Publicacao> dislike(@PathVariable Integer id) {
+		try {
+			Optional<Publicacao> publicacaoOptional = publicacaoRepository.findById(id);
+			if (publicacaoOptional.isPresent()) {
+				Publicacao publicacaoExistente = publicacaoOptional.get();
+				int curtidasAtuais = publicacaoExistente.getCurtidas();
+				curtidasAtuais--;
+				publicacaoExistente.setCurtidas(curtidasAtuais);
+
+				Publicacao publicacaoAtualizadaSalva = publicacaoRepository.save(publicacaoExistente);
+				return ResponseEntity.ok(publicacaoAtualizadaSalva);
+			} else {
+				return ResponseEntity.notFound().build(); // Retorna 404 Not Found se a publicacao não for encontrada
 			}
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Retorna 500 Internal Server Error em caso de exceção

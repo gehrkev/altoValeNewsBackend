@@ -15,10 +15,10 @@ import java.sql.Date;
 public class UsuarioVIP extends Usuario {
 
     //TODO remover o atributo "ativo" e atualizar a tabela usuario_vip no DB.
-    private boolean ativo;
+    private Boolean ativo;
     private Date dataRenovacao;
 
-    public boolean isAtivo() {return ativo;}
+    public Boolean isAtivo() {return ativo;}
 
     public void setAtivo(boolean ativo) {this.ativo = ativo;}
 
