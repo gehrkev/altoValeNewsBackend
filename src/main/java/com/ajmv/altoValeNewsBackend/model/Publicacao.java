@@ -26,7 +26,7 @@ public class Publicacao {
 	private byte[] imagem; 
 	private byte[] video; 
 	private String categoria; 
-	private Boolean visibilidadeVip;
+	private Boolean visibilidadeVip; // <-- Importante usar a classe Boolean ao invés da primitiva boolean para poder verificar a presença do parâmetro em um json enviado por REST
 	private Integer curtidas;
 	@OneToMany(mappedBy = "publicacaoId")
 	private List<Comentario> comentarios;

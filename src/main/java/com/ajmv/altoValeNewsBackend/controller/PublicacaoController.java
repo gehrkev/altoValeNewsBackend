@@ -19,8 +19,7 @@ public class PublicacaoController {
 	@Autowired
 	private PublicacaoRepository publicacaoRepository;
 
-	@GetMapping // mandar um GET para esse controller cai aqui - Isso substitui aquela query
-				// enviada em formato de string 'select * from usuario" etc
+	@GetMapping // mandar um GET para esse controller cai aqui - Isso substitui aquela query enviada em formato de string 'select * from usuario" etc
 	public List<Publicacao> getAll() {
 		List<Publicacao> publicacaoList = publicacaoRepository.findAll();
 		return publicacaoList;
@@ -34,8 +33,21 @@ public class PublicacaoController {
 		} else
 			return ResponseEntity.notFound().build();
 	}
-	
-	//TODO	//GetByEditor
+
+	@GetMapping("/editor/{editorId}") // endpoint para obter todas as publicações de um editor pelo ID do editor
+	public ResponseEntity<List<Publicacao>> getByEditor(@PathVariable Integer editorId) {
+		try {
+			List<Publicacao> publicacoesDoEditor = publicacaoRepository.findByEditorId(editorId);
+
+			if (!publicacoesDoEditor.isEmpty()) {
+				return ResponseEntity.ok(publicacoesDoEditor);
+			} else {
+				return ResponseEntity.notFound().build(); // Retorna 404 Not Found se nenhuma publicação for encontrada para o editor
+			}
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Retorna 500 Internal Server Error em caso de exceção
+		}
+	}
 
 	@PostMapping // Post new publicacao
 	public ResponseEntity<Publicacao> create(@RequestBody Publicacao publicacao) {
@@ -76,7 +88,6 @@ public class PublicacaoController {
 				publicacaoExistente.setCategoria(publicacaoAtualizado.getCategoria());
 				publicacaoExistente.setVisibilidadeVip(publicacaoAtualizado.isVisibilidadeVip());
 				publicacaoExistente.setTitulo(publicacaoAtualizado.getTitulo());
-				
 
 				Publicacao publicacaoAtualizadoBanco = publicacaoRepository.save(publicacaoExistente);
 				return ResponseEntity.ok(publicacaoAtualizadoBanco);
@@ -87,8 +98,7 @@ public class PublicacaoController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Retorna 500 Internal Server Error em caso de exceção
 		}
 	}
-	
-	//TODO @PatchMapping
+
 	@PatchMapping("/{id}") // endpoint para atualizar parcialmente uma publicação pelo ID
 	public ResponseEntity<Publicacao> partialUpdatePublicacao(@PathVariable Integer id, @RequestBody Publicacao publicacaoAtualizado) {
 		try {
