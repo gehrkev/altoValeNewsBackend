@@ -3,7 +3,6 @@ package com.ajmv.altoValeNewsBackend.controller;
 import java.util.List;
 import java.util.Optional;
 
-import com.ajmv.altoValeNewsBackend.model.Comentario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
