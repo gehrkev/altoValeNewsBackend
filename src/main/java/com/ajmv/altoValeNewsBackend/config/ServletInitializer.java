@@ -1,5 +1,6 @@
-package com.ajmv.altoValeNewsBackend;
+package com.ajmv.altoValeNewsBackend.config;
 
+import com.ajmv.altoValeNewsBackend.AltoValeNewsBackendApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 

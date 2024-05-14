@@ -1,6 +1,7 @@
 package com.ajmv.altoValeNewsBackend.model;
 
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,9 @@ public class Usuario {
     protected String senhahash;
     @Enumerated(EnumType.ORDINAL)
     protected TipoUsuario tipo;
+
+    @Transient // indica ao JPA que este campo não deve ser persistido - somente usado no objeto java para fazer comparações na hora do login com o hash.
+    protected String senha;
 
     public Integer getUserId() {
         return userId;
@@ -105,6 +109,14 @@ public class Usuario {
 
     public void setSenhahash(String senhahash) {
         this.senhahash = senhahash;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
     public TipoUsuario getTipo() {
