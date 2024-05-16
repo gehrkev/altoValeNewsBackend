@@ -22,16 +22,14 @@ public class LoginController {
 
     @CrossOrigin
     @PostMapping("/usuario/login")
-    public ResponseEntity<String> login(@RequestBody Usuario usuarioLogin) {
+    public ResponseEntity<?> login(@RequestBody Usuario usuarioLogin) {
         // Verificar se o email existe no banco de dados
         Usuario usuario = repository.findByEmail(usuarioLogin.getEmail());
-
         if (usuario != null) {
             // Verificar se a senha está correta
             if (passwordEncoder.matches(usuarioLogin.getSenha(), usuario.getSenhahash())) {
-                // Aqui você pode gerar um token de autenticação e retorná-lo
-                String token = "TOKEN_GERADO_AQUI";
-                return ResponseEntity.ok(token);
+                // Autenticação bem-sucedida, retornar o usuário
+                return ResponseEntity.ok(usuario);
             } else {
                 // Senha incorreta
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Senha incorreta");
@@ -41,4 +39,5 @@ public class LoginController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Email não encontrado");
         }
     }
+
 }
