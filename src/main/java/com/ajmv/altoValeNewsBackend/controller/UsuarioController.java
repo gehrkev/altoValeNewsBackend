@@ -92,7 +92,8 @@ public class UsuarioController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Retorna 500 Internal Server Error em caso de exceção
         }
     }
-
+    
+    @CrossOrigin
     @PatchMapping("/{id}") // endpoint para atualizar parcialmente um usuário pelo ID
     public ResponseEntity<Usuario> partialUpdateUsuario(@PathVariable Integer id, @RequestBody Usuario usuarioAtualizado) {
         try {
