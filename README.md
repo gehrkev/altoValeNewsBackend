@@ -33,7 +33,7 @@ Para gerar a aplicação, utilize o seguinte comando no terminal:
   mvn package
   ```
 
-Faça o deploy do pacote ````altoValeNewsBackend-0.0.1-SNAPSHOT.war``` localizado no diretório `altoValeNewsBackend/target` para seu servidor Tomcat
+Faça o deploy do pacote ```altoValeNewsBackend-0.0.1-SNAPSHOT.war``` localizado no diretório `altoValeNewsBackend/target` para seu servidor Tomcat
 
 3.1. ***Alternativamente, executar pelo Spring:***
 
