@@ -37,7 +37,11 @@ Faça o deploy do pacote ```altoValeNewsBackend-0.0.1-SNAPSHOT.war``` localizado
 
 3.1. ***Alternativamente, executar pelo Spring:***
 
-Após constuir o projeto com ```mvn clean install```, no diretório raiz do projeto
+Após constuir o projeto com ```mvn clean install```, no diretório raiz do projeto, execute o seguinte comando no terminal:
+   
+   ```bash
+   mvn spring-boot:run
+   ```
 
 4. Acesso à API:
 
