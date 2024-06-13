@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.ajmv.altoValeNewsBackend.model.Publicacao;
-import com.ajmv.altoValeNewsBackend.model.PublicacaoRepository;
+import com.ajmv.altoValeNewsBackend.repository.PublicacaoRepository;
 
 @RestController
 @RequestMapping("publicacao") // localhost:8080/publicacao -- Enderenço referência para a API

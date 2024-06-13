@@ -1,8 +1,7 @@
 package com.ajmv.altoValeNewsBackend.controller;
 
-import com.ajmv.altoValeNewsBackend.model.TipoUsuario;
 import com.ajmv.altoValeNewsBackend.model.Usuario;
-import com.ajmv.altoValeNewsBackend.model.UsuarioRepository;
+import com.ajmv.altoValeNewsBackend.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,5 +1,6 @@
-package com.ajmv.altoValeNewsBackend.model;
+package com.ajmv.altoValeNewsBackend.repository;
 
+import com.ajmv.altoValeNewsBackend.model.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
