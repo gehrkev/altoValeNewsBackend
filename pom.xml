@@ -44,7 +44,7 @@
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<scope>runtime</scope>
+			<scope>compile</scope>
 		</dependency>
 		<!-- Lombok -->
 		<dependency>
