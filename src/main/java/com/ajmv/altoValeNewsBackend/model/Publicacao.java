@@ -23,10 +23,8 @@ public class Publicacao {
 	private String titulo;
 	private Date data;
 	private String texto;
-	@Lob
-	private byte[] imagem;
-	@Lob
-	private byte[] video;
+	private byte[] imagem; 
+	private byte[] video; 
 	private String categoria; 
 	private Boolean visibilidadeVip; // <-- Importante usar a classe Boolean ao invés da primitiva boolean para poder verificar a presença do parâmetro em um json enviado por REST
 	private Integer curtidas;
