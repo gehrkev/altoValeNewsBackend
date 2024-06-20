@@ -1,7 +1,6 @@
 package com.ajmv.altoValeNewsBackend.model;
 
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.*;
@@ -15,21 +14,31 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode(of="publicacaoId")
 public class Publicacao {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer publicacaoId;
+
 	@ManyToOne
-	@JoinColumn(name = "editor_id") // Nome da coluna que representa a chave estrangeira na tabela de Publicacao
+	@JoinColumn(name = "editor_id")
 	private Editor editor;
+
 	private String titulo;
 	private Date data;
 	private String texto;
-	private byte[] imagem; 
-	private byte[] video; 
-	private String categoria; 
-	private Boolean visibilidadeVip; // <-- Importante usar a classe Boolean ao invés da primitiva boolean para poder verificar a presença do parâmetro em um json enviado por REST
+
+	@Column(name = "imagem", columnDefinition="BYTEA")
+	private byte[] imagem;
+
+	@Column(name = "video", columnDefinition="BYTEA")
+	private byte[] video;
+
+	private String categoria;
+	private Boolean visibilidadeVip;
 	private Integer curtidas;
+
 	@OneToMany(mappedBy = "publicacaoId")
 	private List<Comentario> comentarios;
+
 	public Integer getPublicacaoId() {
 		return publicacaoId;
 	}
