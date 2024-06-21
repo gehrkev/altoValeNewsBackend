@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("comentario")// localhost:8080/comentario -- Enderenço referência para a API
+@RequestMapping("comentario") // localhost:8080/comentario -- Endereço de referência para a API
 public class ComentarioController {
 
     @Autowired
@@ -26,10 +26,11 @@ public class ComentarioController {
     @GetMapping("/{id}")
     public ResponseEntity<Comentario> getById(@PathVariable Integer id) {
         Optional<Comentario> comentario = comentarioRepository.findById(id);
-        if(comentario.isPresent()) {
+        if (comentario.isPresent()) {
             return ResponseEntity.ok(comentario.get());
-        } else
+        } else {
             return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping //Post new comentario
@@ -37,7 +38,7 @@ public class ComentarioController {
         try {
             Comentario comentarioCriado = comentarioRepository.save(comentario);
             return ResponseEntity.status(HttpStatus.CREATED).body(comentarioCriado);
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
@@ -100,27 +101,27 @@ public class ComentarioController {
         }
     }
 
-    @PatchMapping("/{id}/like") // endpoint para atualizar as curtidas pelo ID
+    @PatchMapping("/{id}/like") // endpoint para curtir um comentário pelo ID
     public ResponseEntity<Comentario> like(@PathVariable Integer id) {
         try {
             Optional<Comentario> comentarioOptional = comentarioRepository.findById(id);
             if (comentarioOptional.isPresent()) {
                 Comentario comentarioExistente = comentarioOptional.get();
-                    int curtidasAtuais = comentarioExistente.getCurtidas();
-                    curtidasAtuais++;
-                    comentarioExistente.setCurtidas(curtidasAtuais);
+                int curtidasAtuais = comentarioExistente.getCurtidas();
+                curtidasAtuais++;
+                comentarioExistente.setCurtidas(curtidasAtuais);
 
                 Comentario comentarioAtualizadoSalvo = comentarioRepository.save(comentarioExistente);
                 return ResponseEntity.ok(comentarioAtualizadoSalvo);
             } else {
-                return ResponseEntity.notFound().build(); // Retorna 404 Not Found se o usuário não for encontrado
+                return ResponseEntity.notFound().build(); // Retorna 404 Not Found se o comentário não for encontrado
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Retorna 500 Internal Server Error em caso de exceção
         }
     }
 
-    @PatchMapping("/{id}/dislike") // endpoint para atualizar as curtidas pelo ID
+    @PatchMapping("/{id}/dislike") // endpoint para descurtir um comentário pelo ID
     public ResponseEntity<Comentario> dislike(@PathVariable Integer id) {
         try {
             Optional<Comentario> comentarioOptional = comentarioRepository.findById(id);
@@ -133,7 +134,7 @@ public class ComentarioController {
                 Comentario comentarioAtualizadoSalvo = comentarioRepository.save(comentarioExistente);
                 return ResponseEntity.ok(comentarioAtualizadoSalvo);
             } else {
-                return ResponseEntity.notFound().build(); // Retorna 404 Not Found se o usuário não for encontrado
+                return ResponseEntity.notFound().build(); // Retorna 404 Not Found se o comentário não for encontrado
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Retorna 500 Internal Server Error em caso de exceção
