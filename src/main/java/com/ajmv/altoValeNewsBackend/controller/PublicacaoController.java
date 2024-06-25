@@ -30,6 +30,8 @@ public class PublicacaoController {
 
 	private static final Logger LOGGER = Logger.getLogger(PublicacaoController.class.getName());
 
+	//TODO Substituir todos os métodos que tratam com Imagem/Video (que usam JpaRepository) por JDBC puro
+
 	@GetMapping
 	public List<Publicacao> getAll() {
 		return publicacaoRepository.findAll();
@@ -37,12 +39,15 @@ public class PublicacaoController {
 
 	@GetMapping("/{id}")
 	public ResponseEntity<Publicacao> getPublicacao(@PathVariable Integer id) {
-		Publicacao publicacao = publicacaoService.getPublicacao(id);
-		System.out.println("fuck");
-		if (publicacao == null) {
-			return ResponseEntity.notFound().build();
+		try {
+			Publicacao publicacao = publicacaoService.getPublicacao(id);
+			if (publicacao == null) {
+				return ResponseEntity.notFound().build();
+			}
+			return ResponseEntity.ok(publicacao);
+		} catch (SQLException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
-		return ResponseEntity.ok(publicacao);
 	}
 
 	@PostMapping
@@ -60,24 +65,14 @@ public class PublicacaoController {
 			Publicacao publicacao = publicacaoService.savePublicacao(editorId, titulo, data, texto, imageFile, videoFile, categoria, visibilidadeVip, curtidas);
 			return ResponseEntity.ok(publicacao);
 		} catch (IOException e) {
-			return ResponseEntity.status(500).build();
-		} catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deletePublicacao(@PathVariable Integer id) {
-		try {
-			Optional<Publicacao> publicacaoOptional = publicacaoRepository.findById(id);
-			if (publicacaoOptional.isPresent()) {
-				publicacaoRepository.deleteById(id);
-				return ResponseEntity.noContent().build();
-			} else {
-				return ResponseEntity.notFound().build();
-			}
-		} catch (Exception e) {
+			LOGGER.severe("IOException while saving publicacao: " + e.getMessage());
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		} catch (SQLException e) {
+			LOGGER.severe("SQLException while saving publicacao: " + e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		} catch (IllegalArgumentException e) {
+			LOGGER.warning("IllegalArgumentException: " + e.getMessage());
+			return ResponseEntity.badRequest().body(null);
 		}
 	}
 
@@ -96,56 +91,79 @@ public class PublicacaoController {
 		try {
 			Publicacao publicacao = publicacaoService.updatePublicacao(id, editorId, titulo, data, texto, imageFile, videoFile, categoria, visibilidadeVip, curtidas);
 			return ResponseEntity.ok(publicacao);
-		} catch (IOException | SQLException e) {
-			return ResponseEntity.status(500).build();
+		} catch (IOException e) {
+			LOGGER.severe("IOException while updating publicacao: " + e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		} catch (SQLException e) {
+			LOGGER.severe("SQLException while updating publicacao: " + e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		} catch (IllegalArgumentException e) {
+			LOGGER.warning("IllegalArgumentException: " + e.getMessage());
+			return ResponseEntity.badRequest().body(null);
 		}
 	}
 
 	@PatchMapping("/{id}")
 	public ResponseEntity<Publicacao> partialUpdatePublicacao(
 			@PathVariable Integer id,
-			@RequestParam(value = "editorId", required = false) Integer editorId,
-			@RequestParam(value = "titulo", required = false) String titulo,
-			@RequestParam(value = "data", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate data,
-			@RequestParam(value = "texto", required = false) String texto,
+			@RequestParam("editorId") Optional<Integer> editorId,
+			@RequestParam("titulo") Optional<String> titulo,
+			@RequestParam("data") @DateTimeFormat(pattern = "yyyy-MM-dd") Optional<LocalDate> data,
+			@RequestParam("texto") Optional<String> texto,
 			@RequestParam(value = "imagem", required = false) MultipartFile imageFile,
 			@RequestParam(value = "video", required = false) MultipartFile videoFile,
-			@RequestParam(value = "categoria", required = false) String categoria,
-			@RequestParam(value = "visibilidadeVip", required = false) Boolean visibilidadeVip,
-			@RequestParam(value = "curtidas", required = false) Integer curtidas) {
+			@RequestParam("categoria") Optional<String> categoria,
+			@RequestParam("visibilidadeVip") Optional<Boolean> visibilidadeVip,
+			@RequestParam("curtidas") Optional<Integer> curtidas) {
 		try {
-			Publicacao publicacao = publicacaoService.partialUpdatePublicacao(id, editorId, titulo, data, texto, imageFile, videoFile, categoria, visibilidadeVip, curtidas);
+			Publicacao publicacao = publicacaoService.partialUpdatePublicacao(id, editorId.orElse(null), titulo.orElse(null), data.orElse(null), texto.orElse(null), imageFile, videoFile, categoria.orElse(null), visibilidadeVip.orElse(null), curtidas.orElse(null));
 			return ResponseEntity.ok(publicacao);
-		} catch (IOException | SQLException e) {
-			return ResponseEntity.status(500).build();
+		} catch (IOException e) {
+			LOGGER.severe("IOException while partially updating publicacao: " + e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		} catch (SQLException e) {
+			LOGGER.severe("SQLException while partially updating publicacao: " + e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		} catch (IllegalArgumentException e) {
+			LOGGER.warning("IllegalArgumentException: " + e.getMessage());
+			return ResponseEntity.badRequest().body(null);
 		}
 	}
 
-	@PatchMapping("/{id}/like")
-	public ResponseEntity<Publicacao> like(@PathVariable Integer id) {
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> deletePublicacao(@PathVariable Integer id) {
+		try {
+			Optional<Publicacao> publicacaoOptional = publicacaoRepository.findById(id);
+			if (publicacaoOptional.isPresent()) {
+				publicacaoRepository.deleteById(id);
+				return ResponseEntity.noContent().build();
+			} else {
+				return ResponseEntity.notFound().build();
+			}
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+		}
+	}
+
+	@PutMapping("/{id}/like")
+	public ResponseEntity<Publicacao> likePublicacao(@PathVariable Integer id) {
 		try {
 			Publicacao publicacao = publicacaoService.likePublicacao(id);
-			if (publicacao != null) {
-				return ResponseEntity.ok(publicacao);
-			} else {
-				return ResponseEntity.notFound().build();
-			}
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+			return ResponseEntity.ok(publicacao);
+		} catch (IllegalArgumentException e) {
+			LOGGER.warning("IllegalArgumentException: " + e.getMessage());
+			return ResponseEntity.badRequest().body(null);
 		}
 	}
 
-	@PatchMapping("/{id}/dislike")
-	public ResponseEntity<Publicacao> dislike(@PathVariable Integer id) {
+	@PutMapping("/{id}/dislike")
+	public ResponseEntity<Publicacao> dislikePublicacao(@PathVariable Integer id) {
 		try {
 			Publicacao publicacao = publicacaoService.dislikePublicacao(id);
-			if (publicacao != null) {
-				return ResponseEntity.ok(publicacao);
-			} else {
-				return ResponseEntity.notFound().build();
-			}
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+			return ResponseEntity.ok(publicacao);
+		} catch (IllegalArgumentException e) {
+			LOGGER.warning("IllegalArgumentException: " + e.getMessage());
+			return ResponseEntity.badRequest().body(null);
 		}
 	}
 }
