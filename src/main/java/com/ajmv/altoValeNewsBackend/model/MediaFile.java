@@ -3,6 +3,8 @@ package com.ajmv.altoValeNewsBackend.model;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 
+import java.sql.Blob;
+
 @EqualsAndHashCode(of="id")
 @Table(name="media_file")
 @Entity(name="media_file")
