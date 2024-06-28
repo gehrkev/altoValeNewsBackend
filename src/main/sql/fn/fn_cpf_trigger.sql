@@ -1,6 +1,10 @@
-CREATE OR REPLACE FUNCTION fn_cpf_trigger() RETURNS TRIGGER AS $$
+create or replace function fn_cpf_trigger() returns trigger
+    language plpgsql
+as
+$$
 DECLARE
 v_cpf_limpo TEXT;
+    v_cpf_insert TEXT;
     v_caldv1 INT;
     v_caldv2 INT;
     v_dv1 INT;
@@ -8,6 +12,7 @@ v_cpf_limpo TEXT;
 BEGIN
     -- Limpa a formatação do CPF
     v_cpf_limpo := translate(NEW.cpf, './-', '');
+    v_cpf_insert := v_cpf_limpo;
 
     IF length(v_cpf_limpo) = 11 THEN
         -- Extrai os dígitos verificadores
@@ -31,7 +36,8 @@ END LOOP;
 
         -- Verifica se os dígitos calculados correspondem aos informados
         IF v_caldv1 = v_dv1 AND v_caldv2 = v_dv2 THEN
-            NEW.cpf := v_cpf_limpo; -- CPF válido, atualiza o CPF no NEW
+            NEW.cpf := v_cpf_insert;
+           -- CPF válido, atualiza o CPF no NEW
 RETURN NEW;
 ELSE
             RAISE EXCEPTION 'CPF inválido!' USING ERRCODE = '22023'; -- Define o SQLState para CPF inválido
@@ -40,4 +46,6 @@ ELSE
         RAISE EXCEPTION 'CPF inválido!' USING ERRCODE = '22023'; -- Define o SQLState para CPF inválido
 END IF;
 END;
-$$ LANGUAGE plpgsql;
+$$;
+
+
