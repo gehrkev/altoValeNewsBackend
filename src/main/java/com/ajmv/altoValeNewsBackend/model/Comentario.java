@@ -15,6 +15,7 @@ import java.sql.Date;
 public class Comentario {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer comentarioId;
+    @Column(name = "publicacao_id")
     private Integer publicacaoId;
     @ManyToOne
     @JoinColumn(name = "userId") // Nome da coluna que representa a chave estrangeira na tabela de Comentario
